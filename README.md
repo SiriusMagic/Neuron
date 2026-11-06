@@ -8,6 +8,19 @@ Proyecto experimental: cuestionar requisitos, eliminar componentes innecesarios,
 - [003 · Aprender frente a representar](notebooks/Notbook_003_Aprender_vs_representar.ipynb): comparar parametrización y optimización, con L-BFGS.
 - [004 · Selección de operaciones](notebooks/Notbook_004_Seleccion_de_operaciones.ipynb): diez semillas, cinco tareas, 32 subconjuntos; datos en [results/004](results/004).
 
+
+## Desde 005: evaluación de lenguaje
+
+- [005 · Ablación de operaciones para lenguaje causal](notebooks/Notbook_005_Lenguaje.ipynb).
+- [Implementación reproducible](experiments/language005.py).
+- [Ejecutar 005 en Google Colab](https://colab.research.google.com/github/SiriusMagic/Neuron/blob/main/notebooks/Notbook_005_Lenguaje.ipynb).
+
+**Cambio de protocolo:** 001–004 son exploración matemática y NO evidencia de mejora para LLM. Desde 005 las evaluaciones principales usan texto. Comparación inicial: Transformer causal con GELU, ReLU² o sin FFN. La atención, el tokenizador silábico original de [Notbook](https://github.com/SiriusMagic/Notbook/blob/main/laboratorio/silabas.py), la partición de datos y el procedimiento de entrenamiento se mantienen constantes.
+
+Corpus real: reseñas en español `SetFit/amazon_reviews_multi_es`, ya utilizadas en Notbook. El vocabulario se construye solo con entrenamiento; validación y prueba se mantienen separadas. Métrica: bits por carácter **del texto normalizado**, que incluye la codificación de fin de documento. Se evita contar tokens desconocidos como si no contuvieran información mediante respaldo por caracteres.
+
+**Estado:** protocolo y código publicados, resultados de la evaluación real pendientes de ejecución en Colab. El modo `--smoke` solo verifica funcionamiento y NO valida la hipótesis. Las métricas se guardan en `results/005/` al ejecutar. No extrapolar experimentos pequeños a LLM de escala industrial.
+
 ## Resultados e interpretación
 Las redes sin activación SiLU estudiadas en 002–003 pueden representar la misma función cuadrática de dos variables y compilarse algebraicamente a seis coeficientes. Esta equivalencia **no se aplica** a la variante con SiLU ni a redes arbitrarias.
 
