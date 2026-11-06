@@ -1,0 +1,28 @@
+name: Notbook 005 - validacion estatica
+on:
+  push:
+    paths:
+      - 'experiments/language005.py'
+      - 'notebooks/Notbook_005_Lenguaje.ipynb'
+      - '.github/workflows/validate005.yml'
+  workflow_dispatch:
+
+jobs:
+  sintaxis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validar sintaxis y estructura
+        run: |
+          python -m py_compile experiments/language005.py
+          python - <<'PY'
+          import json, pathlib
+          p=pathlib.Path('notebooks/Notbook_005_Lenguaje.ipynb')
+          nb=json.loads(p.read_text(encoding='utf-8'))
+          assert nb['nbformat']==4
+          assert len(nb['cells'])>=5
+          print('Cuaderno valido:',len(nb['cells']),'celdas')
+          PY
