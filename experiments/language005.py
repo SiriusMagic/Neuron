@@ -166,6 +166,8 @@ class Bloque(nn.Module):
                 z = F.gelu(z)
             elif self.tipo == "cuadratica":
                 z = F.relu(z).square()  # ReLU²: mismo número de pesos que GELU.
+            elif self.tipo == "lineal":
+                pass  # Control: ¿hace falta una activación no lineal en el FFN?
             else:
                 raise ValueError(self.tipo)
             x = x + self.down(z)
@@ -226,7 +228,7 @@ def ejecutar(smoke=False, steps=180, seeds=(11, 23, 47),
            "segmentos_prueba": len(px), "modo_smoke": smoke})
     filas = []
     for semilla in seeds:
-        for tipo in ("gelu", "cuadratica", "eliminada"):
+        for tipo in ("gelu", "lineal", "cuadratica", "eliminada"):
             torch.manual_seed(semilla)
             random.seed(semilla)
             modelo = Modelo(len(tok.vocab), tipo, largo=largo).to(dispositivo)
