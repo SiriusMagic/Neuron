@@ -181,6 +181,8 @@ class Modelo(nn.Module):
         self.norm = nn.LayerNorm(dim)
         self.cabeza = nn.Linear(dim, vocab, bias=False)
         self.cabeza.weight = self.emb.weight  # Tied embeddings: mismo diseño para todos.
+        nn.init.normal_(self.emb.weight, mean=0.0, std=0.02)
+        nn.init.normal_(self.pos.weight, mean=0.0, std=0.02)
 
     def forward(self, tokens):
         B, T = tokens.shape
