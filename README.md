@@ -6,7 +6,7 @@ Proyecto experimental: cuestionar requisitos, eliminar componentes innecesarios,
 - [001 · Operaciones de la neurona](notebooks/Notbook_001_Operaciones_de_la_neurona.ipynb): neurona aditiva e interactiva.
 - [002 · Quitar antes de optimizar](notebooks/Notbook_002_Quitar_antes_de_optimizar.ipynb): ablaciones y compactación algebraica (28 → 6 coeficientes).
 - [003 · Aprender frente a representar](notebooks/Notbook_003_Aprender_vs_representar.ipynb): comparar parametrización y optimización, con L-BFGS.
-- **004 · Selección de operaciones**: diez semillas, 5 tareas, 32 subconjuntos; datos en [results/004](results/004). Cuaderno en preparación para el repositorio.
+- [004 · Selección de operaciones](notebooks/Notbook_004_Seleccion_de_operaciones.ipynb): diez semillas, cinco tareas, 32 subconjuntos; datos en [results/004](results/004).
 
 ## Resultados e interpretación
 Las redes sin activación SiLU estudiadas en 002–003 pueden representar la misma función cuadrática de dos variables y compilarse algebraicamente a seis coeficientes. Esta equivalencia **no se aplica** a la variante con SiLU ni a redes arbitrarias.
