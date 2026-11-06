@@ -15,7 +15,7 @@ Proyecto experimental: cuestionar requisitos, eliminar componentes innecesarios,
 - [Implementación reproducible](experiments/language005.py).
 - [Ejecutar 005 en Google Colab](https://colab.research.google.com/github/SiriusMagic/Neuron/blob/main/notebooks/Notbook_005_Lenguaje.ipynb).
 
-**Cambio de protocolo:** 001–004 son exploración matemática y NO evidencia de mejora para LLM. Desde 005 las evaluaciones principales usan texto. Comparación inicial: Transformer causal con GELU, ReLU² o sin FFN. La atención, el tokenizador silábico original de [Notbook](https://github.com/SiriusMagic/Notbook/blob/main/laboratorio/silabas.py), la partición de datos y el procedimiento de entrenamiento se mantienen constantes.
+**Cambio de protocolo:** 001–004 son exploración matemática y NO evidencia de mejora para LLM. Desde 005 las evaluaciones principales usan texto. Comparación inicial: Transformer causal con GELU, FFN lineal (sin activación), ReLU² o sin FFN. La atención, el tokenizador silábico original de [Notbook](https://github.com/SiriusMagic/Notbook/blob/main/laboratorio/silabas.py), la partición de datos y el procedimiento de entrenamiento se mantienen constantes.
 
 Corpus real: reseñas en español `SetFit/amazon_reviews_multi_es`, ya utilizadas en Notbook. El vocabulario se construye solo con entrenamiento; validación y prueba se mantienen separadas. Métrica: bits por carácter **del texto normalizado**, que incluye la codificación de fin de documento. Se evita contar tokens desconocidos como si no contuvieran información mediante respaldo por caracteres.
 
