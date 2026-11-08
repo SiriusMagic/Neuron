@@ -1,0 +1,7 @@
+Archivo: results/005/ampliado_3000/metricas.csv  smoke=False  semillas=[11, 23, 47, 61, 73, 89, 101, 113, 127, 139]
+modelo       n       BPC_prueba       Δ vs gelu (IC95 pareado)  params  ms/lote
+gelu        10    2.0197 ± 0.0106                              —  174592     3.47
+lineal      10    2.0424 ± 0.0050     +0.0227 [+0.0164, +0.0290]  174592     3.53
+cuadratica  10    2.0222 ± 0.0065     +0.0025 [-0.0054, +0.0104]  174592     3.52
+eliminada   10    2.0528 ± 0.0137     +0.0331 [+0.0205, +0.0458]  141184     2.88
+Δ<0 significa menor BPC que gelu. Con <10 semillas el resultado es exploratorio.

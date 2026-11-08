@@ -48,7 +48,7 @@ Las instrucciones prácticas para un agente están en [AGENTS.md](AGENTS.md).
 | [002 — Quitar antes de optimizar](notebooks/Notbook_002_Quitar_antes_de_optimizar.ipynb) | Ablación y compilación 28 → 6 | Compresión algebraica específica de una función cuadrática sin SiLU. |
 | [003 — Aprender vs. representar](notebooks/Notbook_003_Aprender_vs_representar.ipynb) | Comparación de optimización y complejidad | Cuadrática pequeña con L-BFGS igualó aproximadamente a la representación grande en pruebas sintéticas. |
 | [004 — Selección de operaciones](notebooks/Notbook_004_Seleccion_de_operaciones.ipynb) | Reducción de términos cuadráticos | Selección de 2–4 coeficientes; búsqueda de muchos candidatos. |
-| **[005 — Lenguaje](notebooks/Notbook_005_Lenguaje.ipynb)** | Ablación de FFN en texto español | **Primera ejecución real (3 semillas, 180 pasos) en [results/005](results/005/): inconclusa, modelos aún sin converger.** |
+| **[005 — Lenguaje](notebooks/Notbook_005_Lenguaje.ipynb)** | Ablación de FFN en texto español | **Ejecutado con datos reales. A 3000 pasos y 10 semillas ([results/005/ampliado_3000](results/005/ampliado_3000/)): FFN y no linealidad aportan; ReLU² ≈ GELU.** Modelo pequeño, régimen limitado por datos. |
 
 Datos históricos: [002](results/002/), [003](results/003/) y [004](results/004/). No reinterpretarlos como prueba de LLM.
 
@@ -76,7 +76,7 @@ En [experiments/language005.py](experiments/language005.py) se usan cuatro varia
 **Corpus:** `SetFit/amazon_reviews_multi_es`, reseñas reales de español. Se utiliza la entrada de texto, **no** las etiquetas de clasificación.  
 **Tokenizador:** función `silabas` de `Notbook/laboratorio/silabas.py`. Se añaden marcadores y respaldo por caracteres para evitar pérdidas silenciosas en palabras no vistas.  
 **Métrica principal:** bits por carácter del **texto normalizado**, con explicación de sus límites; el entrenamiento es de predicción del siguiente token.  
-**Estado:** primera ejecución real en CPU (3 semillas × 180 pasos), ver [results/005/README.md](results/005/README.md). Todas las variantes seguían mejorando en el último paso: **no hay conclusión**. Siguiente: más pasos y 10 semillas.
+**Estado:** con 180 pasos el resultado fue inconcluso ([results/005](results/005/README.md)). Con 3000 pasos y 10 semillas ([ampliado_3000](results/005/ampliado_3000/README.md)): quitar el FFN empeora +0,033 BPC, el FFN lineal +0,023 y ReLU² empata con GELU (+0,003, IC95 incluye 0). Siguiente: 006 (SwiGLU vs bilineal).
 
 No confundir una diferencia de precisión en clasificación con mayor capacidad generativa. ReLU² no es una invención original; se investiga su utilidad en este sistema concreto.
 
