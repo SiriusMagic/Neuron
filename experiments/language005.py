@@ -142,8 +142,11 @@ def convertir(textos, tokenizador, largo):
         ids = tokenizador.codificar(norm)
         caracteres += len(norm)
         for inicio in range(0, len(ids) - 1, largo):
-            a = ids[inicio:inicio + largo]
+            # Cada token (salvo <bos>) se predice una sola vez. La entrada se recorta
+            # para que tenga el mismo largo que su objetivo; antes, un segmento que
+            # terminaba justo en el último token dejaba x con 80 e y con 79.
             b = ids[inicio + 1:inicio + largo + 1]
+            a = ids[inicio:inicio + len(b)]
             faltan = largo - len(a)
             xs.append(a + [tokenizador.pad] * faltan)
             ys.append(b + [tokenizador.pad] * faltan)
