@@ -261,7 +261,10 @@ def medir(modelo, x, y, total_caracteres, pad, device, batch=24):
 
 
 def ejecutar(smoke=False, steps=180, seeds=(11, 23, 47),
-             n_train=2500, n_val=350, n_test=350, batch=24, largo=80, lr=0.001, out=None):
+             n_train=2500, n_val=350, n_test=350, batch=24, largo=80, lr=0.001, out=None,
+             variantes=("gelu", "lineal", "cuadratica", "eliminada"), crear=None, experimento="005"):
+    # 006 y siguientes reutilizan datos, tokenizador, entrenamiento y métricas; solo cambian `crear`.
+    crear = crear or (lambda vocab, tipo, largo: Modelo(vocab, tipo, largo=largo))
     dispositivo = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     torch.set_num_threads(min(4, torch.get_num_threads()))
     train, valid, test, fuente = particiones(smoke, n_train, n_val, n_test)
@@ -278,17 +281,17 @@ def ejecutar(smoke=False, steps=180, seeds=(11, 23, 47),
                "segmentos_prueba": len(px), "tokens_entreno": int((ty != tok.pad).sum()),
                "fugas_exactas_entre_conjuntos": len(set(train) & set(valid)) + len(set(train) & set(test))
                + len(set(valid) & set(test)), "modo_smoke": smoke}
-    config = {"steps": steps, "seeds": list(seeds), "n_train": n_train, "n_val": n_val, "n_test": n_test,
+    config = {"experimento": experimento, "variantes": list(variantes), "steps": steps, "seeds": list(seeds), "n_train": n_train, "n_val": n_val, "n_test": n_test,
               "batch": batch, "largo": largo, "lr": lr, "dim": 64, "ocultas": 128, "capas": 2,
               "cabezas": 4, "optimizador": "AdamW(weight_decay=0.01)", "clip": 1.0,
               "posiciones_por_modelo_incluye_relleno": steps * batch * largo}
     print(resumen)
     filas = []
     for semilla in seeds:
-        for tipo in ("gelu", "lineal", "cuadratica", "eliminada"):
+        for tipo in variantes:
             torch.manual_seed(semilla)
             random.seed(semilla)
-            modelo = Modelo(len(tok.vocab), tipo, largo=largo).to(dispositivo)
+            modelo = crear(len(tok.vocab), tipo, largo).to(dispositivo)
             opt = torch.optim.AdamW(modelo.parameters(), lr=lr, weight_decay=0.01)
             gen = torch.Generator().manual_seed(semilla + 9001)
             mejor, estado, mejor_step = float("inf"), None, 0
@@ -334,7 +337,7 @@ def ejecutar(smoke=False, steps=180, seeds=(11, 23, 47),
             filas.append(fila)
             print(f"{tipo:11} semilla={semilla} BPC_valid={fila['bpc_validacion']:.3f} "
                   f"BPC_prueba={fila['bpc_prueba']:.3f} params={fila['parametros']}")
-    archivo = Path(out) if out else Path("results/005") / ("smoke.csv" if smoke else "metricas.csv")
+    archivo = Path(out) if out else Path(f"results/{experimento}") / ("smoke.csv" if smoke else "metricas.csv")
     archivo.parent.mkdir(parents=True, exist_ok=True)
     with archivo.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=list(filas[0]))

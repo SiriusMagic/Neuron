@@ -2,7 +2,7 @@ name: Notbook 005 - validacion estatica
 on:
   push:
     paths:
-      - 'experiments/language005.py'
+      - 'experiments/*.py'
       - 'notebooks/Notbook_005_Lenguaje.ipynb'
       - '.github/workflows/validate005.yml'
   workflow_dispatch:
@@ -17,7 +17,7 @@ jobs:
           python-version: '3.11'
       - name: Validar sintaxis y estructura
         run: |
-          python -m py_compile experiments/language005.py
+          python -m py_compile experiments/language005.py experiments/language006.py experiments/analizar005.py
           python - <<'PY'
           import json, pathlib
           p=pathlib.Path('notebooks/Notbook_005_Lenguaje.ipynb')
