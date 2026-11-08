@@ -1,0 +1,49 @@
+{
+  "config": {
+    "steps": 180,
+    "seeds": [
+      11,
+      23,
+      47
+    ],
+    "n_train": 2500,
+    "n_val": 350,
+    "n_test": 350,
+    "batch": 24,
+    "largo": 80,
+    "lr": 0.001,
+    "dim": 64,
+    "ocultas": 128,
+    "capas": 2,
+    "cabezas": 4,
+    "optimizador": "AdamW(weight_decay=0.01)",
+    "clip": 1.0,
+    "posiciones_por_modelo_incluye_relleno": 345600
+  },
+  "datos": {
+    "fuente": "SetFit/amazon_reviews_multi_es",
+    "dispositivo": "cpu",
+    "vocabulario": 1600,
+    "docs": [
+      2500,
+      350,
+      350
+    ],
+    "segmentos_entreno": 3107,
+    "segmentos_validacion": 430,
+    "segmentos_prueba": 425,
+    "tokens_entreno": 143272,
+    "fugas_exactas_entre_conjuntos": 0,
+    "modo_smoke": false
+  },
+  "entorno": {
+    "python": "3.13.18",
+    "torch": "2.15.0+cpu",
+    "plataforma": "Linux-6.18.44-fc-v310-x86_64-with-glibc2.39",
+    "cpu": "x86_64",
+    "gpu": "",
+    "notbook_commit": "77aa0d15f0cf5496110ffe5a415add0ec0bc81cb",
+    "neuron_commit": "8c2c5b5efb96cb3a177da13c60c3570e89d84fe5",
+    "datasets": "5.1.0"
+  }
+}
