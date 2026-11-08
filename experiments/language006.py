@@ -74,7 +74,10 @@ if __name__ == "__main__":
     parser.add_argument("--seeds", type=int, nargs="+", default=[11, 23, 47])
     parser.add_argument("--lr", type=float, default=0.001)
     parser.add_argument("--variantes", nargs="+", default=["gelu", "swiglu", "bilineal", "eliminada"])
+    parser.add_argument("--train-docs", type=int, default=2500)
+    parser.add_argument("--batch", type=int, default=24)
     parser.add_argument("--out", default=None)
     args = parser.parse_args()
     base.ejecutar(smoke=args.smoke, steps=args.steps, seeds=args.seeds, lr=args.lr, out=args.out,
+                  n_train=args.train_docs, batch=args.batch,
                   variantes=args.variantes, crear=crear, experimento="006")
