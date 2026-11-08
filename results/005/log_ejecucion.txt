@@ -1,0 +1,18 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Repo card metadata block was not found. Setting CardData to empty.
+Repo card metadata block was not found. Setting CardData to empty.
+{'fuente': 'SetFit/amazon_reviews_multi_es', 'dispositivo': 'cpu', 'vocabulario': 1600, 'docs': [2500, 350, 350], 'segmentos_entreno': 3107, 'segmentos_validacion': 430, 'segmentos_prueba': 425, 'tokens_entreno': 143272, 'fugas_exactas_entre_conjuntos': 0, 'modo_smoke': False}
+gelu        semilla=11 BPC_valid=2.760 BPC_prueba=2.764 params=174592
+lineal      semilla=11 BPC_valid=2.731 BPC_prueba=2.734 params=174592
+cuadratica  semilla=11 BPC_valid=2.738 BPC_prueba=2.743 params=174592
+eliminada   semilla=11 BPC_valid=2.792 BPC_prueba=2.797 params=141184
+gelu        semilla=23 BPC_valid=2.799 BPC_prueba=2.800 params=174592
+lineal      semilla=23 BPC_valid=2.816 BPC_prueba=2.817 params=174592
+cuadratica  semilla=23 BPC_valid=2.763 BPC_prueba=2.766 params=174592
+eliminada   semilla=23 BPC_valid=2.766 BPC_prueba=2.768 params=141184
+gelu        semilla=47 BPC_valid=2.784 BPC_prueba=2.786 params=174592
+lineal      semilla=47 BPC_valid=2.748 BPC_prueba=2.755 params=174592
+cuadratica  semilla=47 BPC_valid=2.749 BPC_prueba=2.755 params=174592
+eliminada   semilla=47 BPC_valid=2.759 BPC_prueba=2.763 params=141184
+Guardado: /home/user/Neuron/results/005/metricas.csv y metricas.json
+EXIT 0
