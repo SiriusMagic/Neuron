@@ -2,6 +2,8 @@
 
 **Objetivo:** investigar unidades neuronales más simples, eficientes y capaces de aprender lenguaje, empezando por **texto español**. Proyecto experimental abierto; una «nueva neurona» debe demostrar mejoras reales frente a referencias actuales.
 
+**Meta:** una neurona **superior** a las actuales (GELU, SwiGLU) para español: más precisa al mismo coste o igual de precisa con menos coste. Criterio para afirmarlo: [CRITERIO_SUPERIOR.md](CRITERIO_SUPERIOR.md).
+
 **Guía para continuar en Codex:** [AGENTS.md](AGENTS.md). Este README describe decisiones, estado y reproducibilidad del proyecto.
 
 **Repositorios**

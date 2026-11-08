@@ -3,6 +3,8 @@
 ## Misión
 Investigar, desde primeros principios, unidades y bloques neuronales más eficientes **para modelar y generar lenguaje en español**. No asumir que una operación existente es necesaria. No declarar novedades, superioridad, equivalencia exacta ni resultados sin pruebas.
 
+**Meta:** crear una neurona/bloque **superior** a los actuales (GELU y SwiGLU) para lenguaje español. «Superior» solo se afirma si se cumple [CRITERIO_SUPERIOR.md](CRITERIO_SUPERIOR.md); antes es «candidata».
+
 ## Filosofía obligatoria (orden estricto)
 1. **Cuestionar** cada requisito y componente: cuál es su función y evidencia.
 2. **Eliminar** la operación o pieza si es posible; ejecutar ablaciones.
