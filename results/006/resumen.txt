@@ -1,0 +1,7 @@
+Archivo: results/006/metricas.csv  smoke=False  semillas=[11, 23, 47, 61, 73, 89, 101, 113, 127, 139]
+modelo       n       BPC_prueba     Δ vs swiglu (IC95 pareado)  params  ms/lote
+gelu        10    2.0218 ± 0.0092     -0.0025 [-0.0109, +0.0058]  174592     3.63
+swiglu      10    2.0243 ± 0.0120                              —  174548     3.93
+bilineal    10    2.0287 ± 0.0108     +0.0044 [-0.0045, +0.0132]  174548     3.57
+eliminada   10    2.0515 ± 0.0143     +0.0272 [+0.0157, +0.0387]  141184     2.99
+Δ<0 significa menor BPC que swiglu. Con <10 semillas el resultado es exploratorio.

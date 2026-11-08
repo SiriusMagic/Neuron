@@ -1,0 +1,46 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Repo card metadata block was not found. Setting CardData to empty.
+Repo card metadata block was not found. Setting CardData to empty.
+{'fuente': 'SetFit/amazon_reviews_multi_es', 'dispositivo': 'cpu', 'vocabulario': 1600, 'docs': [2500, 350, 350], 'segmentos_entreno': 3107, 'segmentos_validacion': 430, 'segmentos_prueba': 425, 'tokens_entreno': 143272, 'fugas_exactas_entre_conjuntos': 0, 'modo_smoke': False}
+gelu        semilla=11 BPC_valid=2.010 BPC_prueba=2.003 params=174592
+swiglu      semilla=11 BPC_valid=2.007 BPC_prueba=2.004 params=174548
+bilineal    semilla=11 BPC_valid=2.007 BPC_prueba=2.007 params=174548
+eliminada   semilla=11 BPC_valid=2.054 BPC_prueba=2.053 params=141184
+gelu        semilla=23 BPC_valid=2.017 BPC_prueba=2.024 params=174592
+swiglu      semilla=23 BPC_valid=2.017 BPC_prueba=2.023 params=174548
+bilineal    semilla=23 BPC_valid=2.020 BPC_prueba=2.020 params=174548
+eliminada   semilla=23 BPC_valid=2.054 BPC_prueba=2.059 params=141184
+gelu        semilla=47 BPC_valid=2.023 BPC_prueba=2.023 params=174592
+swiglu      semilla=47 BPC_valid=2.021 BPC_prueba=2.017 params=174548
+bilineal    semilla=47 BPC_valid=2.036 BPC_prueba=2.035 params=174548
+eliminada   semilla=47 BPC_valid=2.038 BPC_prueba=2.044 params=141184
+gelu        semilla=61 BPC_valid=2.020 BPC_prueba=2.018 params=174592
+swiglu      semilla=61 BPC_valid=2.028 BPC_prueba=2.024 params=174548
+bilineal    semilla=61 BPC_valid=2.026 BPC_prueba=2.036 params=174548
+eliminada   semilla=61 BPC_valid=2.042 BPC_prueba=2.048 params=141184
+gelu        semilla=73 BPC_valid=2.016 BPC_prueba=2.028 params=174592
+swiglu      semilla=73 BPC_valid=2.011 BPC_prueba=2.007 params=174548
+bilineal    semilla=73 BPC_valid=2.034 BPC_prueba=2.038 params=174548
+eliminada   semilla=73 BPC_valid=2.032 BPC_prueba=2.037 params=141184
+gelu        semilla=89 BPC_valid=2.013 BPC_prueba=2.015 params=174592
+swiglu      semilla=89 BPC_valid=2.030 BPC_prueba=2.034 params=174548
+bilineal    semilla=89 BPC_valid=2.035 BPC_prueba=2.038 params=174548
+eliminada   semilla=89 BPC_valid=2.057 BPC_prueba=2.063 params=141184
+gelu        semilla=101 BPC_valid=2.028 BPC_prueba=2.034 params=174592
+swiglu      semilla=101 BPC_valid=2.026 BPC_prueba=2.037 params=174548
+bilineal    semilla=101 BPC_valid=2.024 BPC_prueba=2.028 params=174548
+eliminada   semilla=101 BPC_valid=2.055 BPC_prueba=2.060 params=141184
+gelu        semilla=113 BPC_valid=2.016 BPC_prueba=2.015 params=174592
+swiglu      semilla=113 BPC_valid=2.038 BPC_prueba=2.034 params=174548
+bilineal    semilla=113 BPC_valid=2.037 BPC_prueba=2.033 params=174548
+eliminada   semilla=113 BPC_valid=2.021 BPC_prueba=2.021 params=141184
+gelu        semilla=127 BPC_valid=2.028 BPC_prueba=2.030 params=174592
+swiglu      semilla=127 BPC_valid=2.040 BPC_prueba=2.038 params=174548
+bilineal    semilla=127 BPC_valid=2.036 BPC_prueba=2.035 params=174548
+eliminada   semilla=127 BPC_valid=2.067 BPC_prueba=2.067 params=141184
+gelu        semilla=139 BPC_valid=2.027 BPC_prueba=2.026 params=174592
+swiglu      semilla=139 BPC_valid=2.022 BPC_prueba=2.024 params=174548
+bilineal    semilla=139 BPC_valid=2.016 BPC_prueba=2.016 params=174548
+eliminada   semilla=139 BPC_valid=2.058 BPC_prueba=2.062 params=141184
+Guardado: /tmp/claude-0/-home-user-Neuron/61650240-0e6e-553c-96fb-7770436c9364/scratchpad/p006/metricas.csv y metricas.json
+EXIT 0

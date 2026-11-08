@@ -49,6 +49,7 @@ Las instrucciones prácticas para un agente están en [AGENTS.md](AGENTS.md).
 | [003 — Aprender vs. representar](notebooks/Notbook_003_Aprender_vs_representar.ipynb) | Comparación de optimización y complejidad | Cuadrática pequeña con L-BFGS igualó aproximadamente a la representación grande en pruebas sintéticas. |
 | [004 — Selección de operaciones](notebooks/Notbook_004_Seleccion_de_operaciones.ipynb) | Reducción de términos cuadráticos | Selección de 2–4 coeficientes; búsqueda de muchos candidatos. |
 | **[005 — Lenguaje](notebooks/Notbook_005_Lenguaje.ipynb)** | Ablación de FFN en texto español | **Ejecutado con datos reales. A 3000 pasos y 10 semillas ([results/005/ampliado_3000](results/005/ampliado_3000/)): FFN y no linealidad aportan; ReLU² ≈ GELU.** Modelo pequeño, régimen limitado por datos. |
+| [006 — SwiGLU vs bilineal](experiments/language006.py) | Referencia industrial vs neurona cuadrática sin activación | **10 semillas ([results/006](results/006/)): empate GELU ≈ SwiGLU ≈ bilineal; banco poco sensible por sobreajuste.** Siguiente: más datos. |
 
 Datos históricos: [002](results/002/), [003](results/003/) y [004](results/004/). No reinterpretarlos como prueba de LLM.
 
