@@ -5,6 +5,9 @@ Prueba de funcionamiento: python experiments/language005.py --smoke --steps 3 --
 """
 import argparse
 import csv
+import json
+import platform
+import subprocess
 import math
 import random
 import re
@@ -57,9 +60,12 @@ def particiones(smoke, n_train, n_val, n_test):
 
     vistos = set()
     def tomar(ds, desde, n):
+        # Devuelve también la siguiente fila sin leer, para que validación empiece
+        # exactamente donde terminó entrenamiento (sin solapar filas).
         out = []
-        for fila in ds.select(range(desde, len(ds))):
-            texto = normalizar(fila["text"])
+        siguiente = desde
+        for siguiente in range(desde, len(ds)):
+            texto = normalizar(ds[siguiente]["text"])
             if len(texto) < 25 or texto in vistos:
                 continue
             vistos.add(texto)
@@ -68,10 +74,10 @@ def particiones(smoke, n_train, n_val, n_test):
                 break
         if len(out) < n:
             raise RuntimeError(f"Solo se encontraron {len(out)} textos únicos; se pidieron {n}")
-        return out
-    train = tomar(train_raw, 0, n_train)
-    valid = tomar(train_raw, n_train, n_val)
-    test = tomar(test_raw, 0, n_test)
+        return out, siguiente + 1
+    train, fin_train = tomar(train_raw, 0, n_train)
+    valid, _ = tomar(train_raw, fin_train, n_val)
+    test, _ = tomar(test_raw, 0, n_test)
     return train, valid, test, nombre
 
 
@@ -195,6 +201,46 @@ class Modelo(nn.Module):
         return self.cabeza(self.norm(x))
 
 
+def entorno():
+    """Metadatos para reproducir: versiones, hardware y commit de Notbook."""
+    import laboratorio
+    datos = {"python": platform.python_version(), "torch": torch.__version__,
+             "plataforma": platform.platform(), "cpu": platform.processor() or platform.machine(),
+             "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else "",
+             "notbook_commit": "", "neuron_commit": ""}
+    try:
+        import datasets
+        datos["datasets"] = datasets.__version__
+    except ImportError:
+        datos["datasets"] = ""
+    for clave, carpeta in (("notbook_commit", Path(laboratorio.__file__).resolve().parent.parent),
+                           ("neuron_commit", Path(__file__).resolve().parent.parent)):
+        try:
+            datos[clave] = subprocess.run(["git", "-C", str(carpeta), "rev-parse", "HEAD"],
+                                          capture_output=True, text=True, check=True).stdout.strip()
+        except (OSError, subprocess.CalledProcessError):
+            pass
+    return datos
+
+
+@torch.no_grad()
+def latencia_ms(modelo, x, device, repeticiones=20):
+    """Mediana de ms por lote de inferencia (forward completo, sin generación)."""
+    modelo.eval()
+    a = x[:24].to(device)
+    tiempos = []
+    for i in range(repeticiones + 3):
+        if device.type == "cuda":
+            torch.cuda.synchronize()
+        t = time.perf_counter()
+        modelo(a)
+        if device.type == "cuda":
+            torch.cuda.synchronize()
+        if i >= 3:  # descartar calentamiento
+            tiempos.append((time.perf_counter() - t) * 1000)
+    return sorted(tiempos)[len(tiempos) // 2]
+
+
 @torch.no_grad()
 def medir(modelo, x, y, total_caracteres, pad, device, batch=24):
     modelo.eval()
@@ -223,9 +269,17 @@ def ejecutar(smoke=False, steps=180, seeds=(11, 23, 47),
     px, py, pc = convertir(test, tok, largo)
     if (ty != tok.pad).sum() < 100:
         raise ValueError("Corpus insuficiente.")
-    print({"fuente": fuente, "dispositivo": str(dispositivo), "vocabulario": len(tok.vocab),
-           "segmentos_entreno": len(tx), "segmentos_validacion": len(vx),
-           "segmentos_prueba": len(px), "modo_smoke": smoke})
+    resumen = {"fuente": fuente, "dispositivo": str(dispositivo), "vocabulario": len(tok.vocab),
+               "docs": [len(train), len(valid), len(test)],
+               "segmentos_entreno": len(tx), "segmentos_validacion": len(vx),
+               "segmentos_prueba": len(px), "tokens_entreno": int((ty != tok.pad).sum()),
+               "fugas_exactas_entre_conjuntos": len(set(train) & set(valid)) + len(set(train) & set(test))
+               + len(set(valid) & set(test)), "modo_smoke": smoke}
+    config = {"steps": steps, "seeds": list(seeds), "n_train": n_train, "n_val": n_val, "n_test": n_test,
+              "batch": batch, "largo": largo, "lr": lr, "dim": 64, "ocultas": 128, "capas": 2,
+              "cabezas": 4, "optimizador": "AdamW(weight_decay=0.01)", "clip": 1.0,
+              "posiciones_por_modelo_incluye_relleno": steps * batch * largo}
+    print(resumen)
     filas = []
     for semilla in seeds:
         for tipo in ("gelu", "lineal", "cuadratica", "eliminada"):
@@ -257,11 +311,13 @@ def ejecutar(smoke=False, steps=180, seeds=(11, 23, 47),
                 torch.cuda.synchronize()
             segundos = time.perf_counter() - comienzo
             modelo.load_state_dict(estado)
+            ms = latencia_ms(modelo, px, dispositivo)
             val = medir(modelo, vx, vy, vc, tok.pad, dispositivo)
             prueba = medir(modelo, px, py, pc, tok.pad, dispositivo)
             fila = {
                 "fuente": fuente, "smoke": smoke, "semilla": semilla, "modelo": tipo,
                 "parametros": sum(p.numel() for p in modelo.parameters()),
+                "bytes_fp32": sum(p.numel() * p.element_size() for p in modelo.parameters()),
                 "pasos": steps, "mejor_paso": mejor_step, "segundos_entrenar": round(segundos, 3),
                 "bpc_validacion": val["bpc_normalizado"],
                 "bpc_prueba": prueba["bpc_normalizado"],
@@ -269,6 +325,8 @@ def ejecutar(smoke=False, steps=180, seeds=(11, 23, 47),
                 "perplejidad_prueba": prueba["perplejidad"],
                 "tokens_prueba": prueba["tokens"],
                 "chars_normalizados_prueba": pc,
+                "ms_inferencia_lote24": round(ms, 3),
+                "dispositivo": str(dispositivo),
             }
             filas.append(fila)
             print(f"{tipo:11} semilla={semilla} BPC_valid={fila['bpc_validacion']:.3f} "
@@ -280,7 +338,9 @@ def ejecutar(smoke=False, steps=180, seeds=(11, 23, 47),
         writer = csv.DictWriter(f, fieldnames=list(filas[0]))
         writer.writeheader()
         writer.writerows(filas)
-    print(f"Guardado: {archivo.resolve()}")
+    meta = {"config": config, "datos": resumen, "entorno": entorno()}
+    (archivo.with_suffix(".json")).write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"Guardado: {archivo.resolve()} y {archivo.with_suffix('.json').name}")
     if smoke:
         print("AVISO: corpus sintético; NO interpretar métricas como evidencia sobre LLM.")
     return filas
