@@ -261,7 +261,7 @@ def medir(modelo, x, y, total_caracteres, pad, device, batch=24):
 
 
 def ejecutar(smoke=False, steps=180, seeds=(11, 23, 47),
-             n_train=2500, n_val=350, n_test=350, batch=24, largo=80, lr=0.001):
+             n_train=2500, n_val=350, n_test=350, batch=24, largo=80, lr=0.001, out=None):
     dispositivo = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     torch.set_num_threads(min(4, torch.get_num_threads()))
     train, valid, test, fuente = particiones(smoke, n_train, n_val, n_test)
@@ -334,9 +334,8 @@ def ejecutar(smoke=False, steps=180, seeds=(11, 23, 47),
             filas.append(fila)
             print(f"{tipo:11} semilla={semilla} BPC_valid={fila['bpc_validacion']:.3f} "
                   f"BPC_prueba={fila['bpc_prueba']:.3f} params={fila['parametros']}")
-    destino = Path("results/005")
-    destino.mkdir(parents=True, exist_ok=True)
-    archivo = destino / ("smoke.csv" if smoke else "metricas.csv")
+    archivo = Path(out) if out else Path("results/005") / ("smoke.csv" if smoke else "metricas.csv")
+    archivo.parent.mkdir(parents=True, exist_ok=True)
     with archivo.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=list(filas[0]))
         writer.writeheader()
@@ -358,6 +357,7 @@ if __name__ == "__main__":
     parser.add_argument("--val-docs", type=int, default=350)
     parser.add_argument("--test-docs", type=int, default=350)
     parser.add_argument("--batch", type=int, default=24)
+    parser.add_argument("--out", default=None, help="CSV de salida (por defecto results/005/metricas.csv)")
     args = parser.parse_args()
     ejecutar(smoke=args.smoke, steps=args.steps, seeds=args.seeds,
-             n_train=args.train_docs, n_val=args.val_docs, n_test=args.test_docs, batch=args.batch)
+             n_train=args.train_docs, n_val=args.val_docs, n_test=args.test_docs, batch=args.batch, out=args.out)
