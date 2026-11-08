@@ -7,8 +7,21 @@
 ## 1. Contra quién se compara
 
 - **GELU:** control histórico del proyecto (005).
-- **SwiGLU** (Shazeer, 2020, *GLU Variants Improve Transformer*, arXiv:2002.05202): es el FFN que usan muchos LLM actuales, así que superar solo a GELU no basta. Debe añadirse como referencia antes de afirmar superioridad.
+- **SwiGLU** (Shazeer, 2020, *GLU Variants Improve Transformer*, arXiv:2002.05202): el FFN de los LLM grandes abiertos actuales. **Es la referencia principal a vencer**; superar solo a GELU no basta.
 - **Ablación:** el mismo modelo sin la pieza nueva.
+
+### Modelos cerrados (GPT, Claude, Gemini…)
+
+La meta es superar a las neuronas de los LLM más grandes de la industria. Pero la arquitectura interna de los modelos cerrados **no es pública**, así que no se puede comparar contra ella ni afirmar que se la supera. Se usa como sustituto **lo mejor documentado públicamente** en LLM grandes abiertos:
+
+- FFN **SwiGLU** (LLaMA, Qwen, Mistral, DeepSeek y otros, según sus informes técnicos).
+- A gran escala, **mezcla de expertos (MoE)** con expertos SwiGLU. Solo es comparable cuando el proyecto llegue a esa escala.
+
+Ganar al FFN de un modelo pequeño **no** equivale a ganar a GPT o Claude como sistema: esos modelos difieren en datos, escala, entrenamiento y alineamiento. La afirmación válida es: «esta neurona supera a SwiGLU a igual coste en N tamaños de modelo».
+
+### Multimodal (futuro)
+
+Primero texto en español. Una neurona que gane en texto se probará después en otras modalidades (imagen, audio) contra las referencias públicas de cada una. La ventaja en texto no se extrapola sin medir.
 
 ## 2. Qué significa «superior» (al menos una de estas, sin empeorar las otras)
 
